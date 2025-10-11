@@ -1,0 +1,34 @@
+SELECT
+    i.INVOICE_ID,
+    i.INVOICE_NUM,
+    i.INVOICE_DATE,
+    i.INVOICE_AMOUNT,
+    i.PAYMENT_STATUS_FLAG AS STATUS,
+    s.VENDOR_NAME AS SUPPLIER_NAME
+FROM
+    AP_INVOICES_ALL i
+JOIN
+    poz_SUPPLIERS_v s
+    ON i.VENDOR_ID = s.VENDOR_ID
+where 1=1
+and i.invoice_id in ( :p_inv_id )
+and s.VENDOR_NAME in (:ven_name)
+
+
+
+
+# LOV for :p_inv_id (Invoice ID)
+
+select invoice_id from ap_invoices_all ORDER BY INVOICE_ID
+
+
+#3. LOV for :ven_name (Supplier Name — Dependent LOV)
+
+SELECT 
+   distinct  p.vendor_NAME 
+FROM 
+    poz_suppliers_v p,
+    ap_invoices_all a
+WHERE 
+    a.invoice_id in ( :p_inv_id)
+    AND a.vendor_id = p.vendor_id
