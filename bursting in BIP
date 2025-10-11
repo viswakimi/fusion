@@ -49,3 +49,27 @@ PARAMETER4: Remote Directory
 PARAMETER5: Remote File Name
 PARAMETER6: Secure (set this value to 'true' to enable Secure FTP)
 (PARAMETER 7-10 are not used)
+
+
+SELECT 
+  trx_number AS KEY,
+  'XX_BURS_LAY' AS TEMPLATE,
+  :xdo_user_report_locale AS LOCALE,
+  'PDF' AS OUTPUT_FORMAT,
+  'EMAIL' AS DEL_CHANNEL,
+  'AR_INVOICE_' || trx_number AS OUTPUT_NAME,
+  'v---i22@gmail.com' AS PARAMETER1,
+  'v---22@gmail.com' AS PARAMETER2,
+  'no-reply@yourdomain.com' AS PARAMETER3,
+  'Invoice Report' AS PARAMETER4,
+  'Dear Customer, Please find the invoice attached.' AS PARAMETER5,
+  'true' AS PARAMETER6,
+  'reply@yourdomain.com' AS PARAMETER7,
+  'v----22@gmail.com' AS PARAMETER8
+FROM (
+  SELECT DISTINCT b.trx_number 
+  FROM ra_customer_trx_lines_all a
+  JOIN ra_customer_trx_all b ON a.customer_trx_id = b.customer_trx_id
+  WHERE a.customer_trx_id IN (1002, 1)
+)
+
