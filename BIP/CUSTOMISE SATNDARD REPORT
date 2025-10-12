@@ -1,0 +1,210 @@
+Scenario:
+
+https://ehq****************m3.oraclecloud.com/analytics/saw.dll?catalog (we cannot perform customization)
+https://******************888.oraclecloud.com/xmlpserver/servlet/home (sow we need /xmlpserver)
+
+1. Customize AR Invoice Print Report
+2. Add Payment term description column in data model
+3. Add 2 new fields in the report output - term name and term description in the header section of the report
+
+Take aways:
+
+1. Though we can modify report template and data model query, but we cannot validate data using PL/SQL package like EBS system.
+2. Fusion SaaS does not provide access to database, so we can't use of fusion database or can't call any database related custom program unit in report trigger.
+3. We can't modify or hide the parameters used in standard report.
+4. You must provide the values of flexfield. Those are actually lexical references in the report query.
+&P_DYNAMIC_FROM_CLAUSE = ,dual
+&P_DYNAMIC_WHERE_CLAUSE1 = 1=1 and
+&P_DYNAMIC_ORDER_BY_CLAUSE = order by 1
+
+
+
+
+
+
+
+-------------------------------
+step-by-step process to customize an Oracle Fusion BI Publisher report, simplified and structured so you can follow it easily:
+
+Step 1: Copy the Data Model to Custom Folder
+
+Why: You cannot edit seeded (standard) reports directly.
+
+How:
+
+Go to Reports & Analytics → Browse Catalog.
+
+Find the original report/data model in its module folder.
+
+Copy it to the Custom folder (Custom → Your Module).
+
+Result: You now have a working copy that you can safely modify.
+
+Step 2: Modify the Data Model
+
+Open the copied data model in Custom folder.
+
+You can now:
+
+Add or remove columns/fields
+
+Apply filters or conditions
+
+Modify SQL queries if needed
+
+Save the data model after changes.
+
+Tip: Keep changes minimal initially to avoid breaking the report.
+
+Step 3: Download the Report Template
+
+Click on Layout in the report interface.
+
+If a template exists, download it for editing.
+
+This template is usually in RTF, XSL-FO, or Excel format depending on report type.
+
+Wait until the download completes.
+
+Step 4: Customize the Report Layout
+
+Open the template in the appropriate editor:
+
+RTF → Microsoft Word with BI Publisher plugin
+
+XSL-FO → Text/XML editor
+
+Excel → Excel itself
+
+Make layout changes:
+
+Add/remove columns
+
+Change font, colors, or alignment
+
+Add headers, footers, or additional fields
+
+Step 5: Upload the Customized Template
+
+Go back to BI Publisher → Layout → Upload.
+
+Upload your modified template.
+
+Important: Do not check “Use Default Template” — this ensures your changes are applied.
+
+Save the layout.
+
+Step 6: Test the Customized Report
+
+Run the report from the Custom folder.
+
+Verify:
+
+All columns and fields appear correctly
+
+Formatting matches your customization
+
+Calculations or summaries (if any) are correct
+
+Step 7: Deploy / Install (Optional)
+
+If the report needs to go to another environment:
+
+Create a requirement/request in Oracle for deployment.
+
+Use the downloaded script/source code from your Custom report.
+
+Upload/install it in the target environment.
+
+Result: The customized report is now available in the target environment.
+
+Key Notes
+
+Always work in Custom folder — never change seeded reports.
+
+Download and edit templates carefully.
+
+Test thoroughly before deploying.
+
+Keep a backup of original templates for safety.
+
+
+-----------------------------
+the process to customize an Oracle Fusion BI Publisher report in simple terms. Let me organize it clearly step by step so it’s easier to follow and understand:
+
+Step-by-Step Process for Customizing BI Publisher Reports
+1️⃣ Copy the Data Model to Custom Folder
+
+You cannot directly edit seeded reports.
+
+First, copy the original data model from the seeded folder to your Custom folder in BI Publisher.
+
+This ensures that the original report remains untouched.
+
+2️⃣ Navigate to the Custom Data Model
+
+Go to Custom → Your Module / Folder.
+
+Open the copied data model.
+
+Here you can add, remove, or modify columns as per your requirement.
+
+Save the updated data model.
+
+Tip: Always make small changes and test — don’t modify all at once.
+
+3️⃣ Prepare the Template
+
+Click on Layout in the report.
+
+If a template doesn’t exist, you may download the seeded template to use as a starting point.
+
+Wait for the download to complete (you’ll get an .xpt or .rtf file).
+
+4️⃣ Customize the Template
+
+Open the downloaded template in Word (for RTF) or an HTML/XSL editor.
+
+Make your formatting changes:
+
+Add/remove columns
+
+Change fonts, colors, or alignment
+
+Add headers, footers, or additional fields
+
+5️⃣ Upload the Customized Template
+
+After editing, go back to BI Publisher → Layouts → Upload.
+
+Do not check “Use Default Template” — this ensures your customization is applied.
+
+Save the layout.
+
+6️⃣ Test the Report
+
+Run the report in Custom folder to verify your changes.
+
+Make sure all fields, columns, and formatting appear as intended.
+
+7️⃣ Optional: Install Using Source Code
+
+If required, you can use the downloaded script to deploy the report into another environment.
+
+This usually involves:
+
+Creating a requirement/request in Oracle
+
+Uploading the script file
+
+Validating the report runs correctly in the target environment
+
+✅ Key Points to Remember
+
+Never edit seeded reports directly — always work in Custom.
+
+Always download the template first, then edit.
+
+Do not check “Default Template” while uploading, otherwise your changes won’t apply.
+
+Test after every change to ensure the report behaves correctly.
