@@ -1,0 +1,121 @@
+LANGUAGE
+
+SELECT name,language from ap_terms_tl
+WHERE LANGUAGE = :XDO_USER_REPORT_ORACLE_LANG
+  AND SOURCE_LANG = :XDO_USER_REPORT_ORACLE_LANG
+
+-------------------------------------
+ you want to check which multi-language options are available in your instance, the steps are as you described:
+
+Navigate to Setup & Maintenance:
+
+Go to the Navigator → Setup & Maintenance.
+
+Search for Manage Language:
+
+In the Search box, type “Manage Language”.
+
+Click on Blind Search:
+
+Instead of entering criteria, click Blind Search to fetch all available records.
+
+Review Search Results:
+
+You’ll see the list of languages in your Fusion instance, including:
+
+Language Code (e.g., EN for English, ZH for Chinese)
+
+Language Name (e.g., English, Chinese Simplified)
+
+Language Tag (used for locale formatting and translations)
+
+This is useful to identify which languages your Fusion system supports for multi-language transactions, reports, and user interfaces.
+---------------------------------------------------------------------------------------------------------------
+
+
+you can enable or assign a language in Oracle Fusion after checking the available languages:
+
+1. Assign a Language to a User
+
+Navigate to Setup and Maintenance → Manage Users.
+
+Search for the user you want to update.
+
+Open the user record.
+
+Look for the Preferred Language field.
+
+Select the language from the dropdown (these are the languages you saw in Manage Language).
+
+Save the changes.
+✅ Now, when this user logs in, the UI will appear in the selected language.
+
+
+2. Enable a Language for Transactions / Reports
+
+Some languages may need to be enabled globally for translations in transactions, reports, or BI Publisher templates:
+
+Navigate to Setup and Maintenance → Manage Languages (same as before).
+
+Click Edit on the language you want to enable.
+
+Make sure the Active checkbox is selected.
+
+Save your changes.
+
+
+
+3. Language Tags for Reporting / BI Publisher
+
+The Language Tag you saw (like EN-US, ZH-CN) is used in BI Publisher or OTBI reports to display translated labels.
+
+When creating reports, you can use the language tag to show the report in different languages dynamically.
+
+-----------------------------
+step-by-step guide to activate a language (like ZH-CN) in Oracle Fusion so your BI Publisher report can use it:
+
+Step 1: Navigate to Manage Languages
+
+Go to Navigator → Setup & Maintenance.
+
+In the Search box, type “Manage Languages”.
+
+Click Manage Languages from the search results.
+
+Step 2: Search for ZH-CN
+
+Click Blind Search (or just Search without criteria) to list all languages.
+
+Locate the row with Language Code = ZH-CN (Chinese Simplified).
+
+Step 3: Activate the Language
+
+Click the Edit / Pencil icon for ZH-CN.
+
+Check the Active checkbox (or make sure it’s ticked).
+
+Save your changes.
+
+✅ This ensures the language is now available in Fusion for users, reports, and translations.
+
+Step 4: Assign ZH-CN to a User (Optional but Recommended)
+
+Go to Setup & Maintenance → Manage Users.
+
+Search and select the user who will run the report.
+
+In Preferred Language, select ZH-CN.
+
+Save changes.
+
+Now, when this user runs the report, Fusion will try to display all labels in ZH-CN.
+
+Step 5: Test Your Report
+
+Open your BI Publisher report.
+
+Select Language = ZH-CN in the Run Report dialog.
+
+All fields that have translations (via your XLIFF file) should now appear in Chinese.
+
+
