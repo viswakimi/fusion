@@ -1,0 +1,60 @@
+setting PDF security directly in the RTF template using the BI Publisher Advanced Template properties,
+
+
+2️⃣ Step-by-Step in Microsoft Word
+
+Step 1: Open RTF Template in Word
+
+Open your .rtf template with BI Publisher Template Builder.
+
+Step 2: Go to Info → Advanced Properties → Custom
+
+Word → File → Info → Properties → Advanced Properties → Custom.
+
+Step 3: Add Custom Properties
+
+Name	Type	Value
+xdo-pdf-security	Text	true
+xdo-pdf-openpassword	Text  {DATA_DS/G_1/PASSWORD}
+
+WHERE PASSWORD IN SQL QUERY (DATA MODDEL)
+
+
+
+Steps for setting PDF security in an RTF template
+Step 1: Open the Advanced Properties in Word
+Open your RTF template in Microsoft Word.
+Navigate to File > Info > Properties > Advanced Properties.
+Click the Custom tab in the properties window. 
+
+Step 2: Add custom security properties
+Create the following custom properties to enable PDF security. You can add more properties to define specific restrictions. 
+To enable PDF security:
+Name: xdo-pdf-security
+Type: Text
+Value: true 
+To set a static password for opening the PDF:
+Name: xdo-pdf-open-password
+Type: Text
+Value: YourStaticPassword (Replace with your desired password) 
+To set a dynamic password from XML data:
+Name: xdo-pdf-open-password
+Type: Text
+Value: {XML_TAG_NAME} (Replace {XML_TAG_NAME} with the name of the data element from your report's data model that contains the password). 
+To disable printing:
+Name: xdo-pdf-no-printing
+Type: Text
+Value: true
+To disable content copying and extraction:
+Name: xdo-pdf-no-cceda
+Type: Text
+Value: true
+
+Step 3: Define encryption level (optional)
+For more advanced security, you can set the encryption level for the output PDF. 
+Name: xdo-pdf-encryption-level
+Type: Text
+Value: 2 (A value of 2 typically indicates 128-bit AES encryption, while a higher number may offer stronger encryption. Always verify with Oracle's documentation for the values supported by your specific BI Publisher version). 
+
+Step 4: Save the RTF template
+Save your RTF template after defining the custom properties. When the report is run, BI Publisher will read these properties and apply the specified security settings to the PDF output. 
