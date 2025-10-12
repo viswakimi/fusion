@@ -19,6 +19,47 @@ xdo-pdf-openpassword	Text  {DATA_DS/G_1/PASSWORD}
 
 WHERE PASSWORD IN SQL QUERY (DATA MODDEL)
 
+----------------------------------------------------------------------------------------------------------------------------------
+different methods for applying password-based security for BI Publisher in Fusion Cloud.
+
+1. Set a password for a specific report output
+You can password-protect the output of a report, such as a PDF or Excel file, directly within the report's properties. This is typically used for securing confidential or sensitive data. 
+Steps:
+Navigate to Tools > Reports and Analytics from the Navigator menu.
+Click Browse Catalog to open the BI Publisher catalog.
+Find and edit the specific report that requires password protection.
+Click the Properties button.
+Go to the Formatting tab.
+For PDF output, set the Enable PDF Security property to True and enter a password in the Open document password field.
+Save the changes. The next time the report is run, the output will require the password to open. 
+
+2. Set a password for a data source connection
+When connecting BI Publisher to an external data source, like a database, you set the password on the connection itself. For a Fusion Application data source, this can be done using either a password or a secret from the Oracle Cloud Infrastructure (OCI) Vault. 
+Steps:
+Log in to BI Publisher with administrative privileges.
+Go to the Administration page.
+Under the Administration page, navigate to Data Sources.
+Configure the specific data source you want to secure.
+Enter the username and password details for the database connection.
+Alternatively, you can select the "Use vault secret OCID" option to use a secret from OCI Vault instead of entering the password directly. 
+
+3. Password-protect an SFTP delivery channel
+For secure delivery of reports, you can configure an SFTP server as a delivery channel and set up authentication, which can involve passwords or PGP keys. 
+Steps:
+In BI Publisher, navigate to Administration > Delivery > SFTP.
+Add a new SFTP server.
+Enter the required connection details, including the host, port, and authentication method (e.g., username/password).
+Click Test Connection to ensure the credentials are correct. 
+
+
+The modern approach: Use OCI Vault
+For enhanced security, Oracle recommends using the OCI Vault to store and manage passwords and secrets. This prevents developers or administrators from directly viewing credentials. The BI Publisher configuration can then reference the Vault secret to retrieve the password securely. 
+Steps:
+Set up OCI Vault and create a secret to store the password.
+When configuring a data source connection in BI Publisher, select the option to "Use vault secret OCID".
+Paste the OCID of the secret from your OCI Vault into the appropriate field. 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Steps for setting PDF security in an RTF template
