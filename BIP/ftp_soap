@@ -1,6 +1,28 @@
 
-soap 
-https://<server name>/xmlpserver/services/ExternalReportWSSService?WSDL
+Public Services: Expects credentials in the payload/body of the SOAP envelope.
+ReportService: runReport method (See ReportService in Developer's Guide for Oracle Business Intelligence Publisher.)
+xmlpserver/services/v2/ReportService?wsdl
+ScheduleService: getDocumentData method (See ScheduleService in Developer's Guide for Oracle Business Intelligence Publisher.)
+xmlpserver/services/v2/ScheduleService?wsdl
+Protected Services: Expects credentials as part of headers in the SOAP envelope.
+Note
+This service is recommended if you have to use synchronous calls for BI reports.
+ExternalReportWSSService: runReport method
+xmlpserver/services/ExternalReportWSSService?wsdl
+ScheduleReportWSSService: getDocumentData method
+xmlpserver/services/ScheduleReportWSSService?wsdl
+When the SOAP Adapter calls an Oracle Fusion Applications business intelligence publisher (BIP) report synchronously, the report data is always returned as a base64-encoded string in the response. These services do not support attachments in the response. In this case, the feature to configure MTOM support in the SOAP Adapter does not work.
+
+Handling the BI Response
+
+The BI response can be parsed in the integration with the following approaches:
+Recommended: Use the decodeBase64ToReference mapper function to convert the base64 string to a file reference and use the file reference in a stage file action/FTP Adapter read file operation scenario for further processing.
+Alternative: Write the base64 string using an opaque schema to a file using a stage file action/FTP Adapter write file operation scenario, then read the file using a stage file action/FTP Adapter scenario for further processing.
+Note
+Upon calling a BIP report synchronously, the request sent to the BIP web service initiates report generation and sends a response back after the report is generated. This can cause latency issues in an Oracle Integration environment.
+For the above reason, calling BI report services synchronously with the SOAP Adapter is recommended for short-running and/or small size reports. Be aware of the payload size restrictions. See Service Limits in Provisioning and Administering Oracle Integration 3.
+---------------------------------------------------------------
+
 
 Request Payload to run BI Report using SOAP
 
@@ -28,9 +50,47 @@ Request Payload to run BI Report using SOAP
    </soap:Body>
 </soap:Envelope>
 
+------------------------------------------------------------------------------------------------------------------------------
 
+ScheduleService
 
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:sch="http://xmlns.oracle.com/oxp/service/ScheduleReportService">
+   <soap:Header/>
+   <soap:Body>
+      <sch:scheduleReport>
+         <scheduleRequest>
+            <deliveryChannels>
+               <ftpOptions>
+                  <ftpServerName>TEST</ftpServerName>
+                  <remoteFile>/home/ubuntu/outbound/invoice/Invoice2.csv</remoteFile>
+                  <sftpOption>true</sftpOption>
+               </ftpOptions>
+            </deliveryChannels>
+            <reportAttributes>
+               <attributeFormat>csv</attributeFormat>
+            </reportAttributes>
+            <parameterNameValues>
+               <listOfParamNameValues>
+                  <name>p_source</name>
+                  <values>PSIIF</values>
+               </listOfParamNameValues>
+               <listOfParamNameValues>
+                  <name>p_inv_num</name>
+                  <values>1620314</values>
+               </listOfParamNameValues>
+            </parameterNameValues>
+            <reportAbsolutePath>/Custom/Financials/XXDEMO_RFT_TEMPLATE.xdo</reportAbsolutePath>
+            <saveDataOption>true</saveDataOption>
+            <saveOutputOption>true</saveOutputOption>
+            <schedulePublicOption>true</schedulePublicOption>
+            <userJobName>Test Job SOAP</userJobName>
+         </scheduleRequest>
+      </sch:scheduleReport>
+   </soap:Body>
+</soap:Envelope>
 
+------------------------------------------------------------------------------------------------------------------------------
 1. FTP (File Transfer Protocol)
 
 Purpose: To transfer files from one system to another, often between a remote server (like a cloud source) and your local system.
