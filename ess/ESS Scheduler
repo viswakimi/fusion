@@ -1,0 +1,56 @@
+oracle.apps.fnd.applcore.lookups.model.publicView.CommonLookupPVO
+
+
+BI Publisher Scheduler VS ESS Scheduler
+Scenario	Recommended Option
+Just want to test or email a report occasionally	BI Publisher Scheduler
+Want a Fusion-wide scheduled process, visible to users	ESS Scheduler
+Need to trigger report from SOAP/REST API or integration	ESS Scheduler
+Need parameters with LOVs and roles	ESS Scheduler
+Internal or one-time testing	BI Scheduler is fine
+🏁 Summary
+
+In short:
+BI Publisher Scheduler = personal, limited, standalone timer.
+ESS Scheduler = enterprise-grade, role-based, monitored job engine across all Fusion modules.
+
+
+
+
+
+
+
+⚙️ Step 1: Navigate to ESS Job Definition Setup
+
+Go to Navigator → Setup and Maintenance
+
+Search for and open task:
+
+Manage Enterprise Scheduler Job Definitions and Job Sets for Financials
+(or for your module — e.g., “for Common Applications” also works)
+
+⚙️ Step 2: Create a New Job Definition
+
+Click Create (➕) and enter the following details carefully 👇
+
+Field	Value	Explanation
+Job Definition Name	XX_ESS_RPT_JOB	Internal unique name
+Display Name	SXX_ESS_RPT_JOB	What users see in “Scheduled Processes”
+Application	Payables (or relevant module)	Controls access and visibility
+Job Type	BIPReportJobType	Tells ESS this is a BI Publisher report
+Report Path	/Shared Folders/Custom/XX_DEMO_VIS/XX_ESS_RPT.xdo	Your exact report path
+Report Output Type	PDF (or Excel, as needed)	Default format
+
+Then click Save and Next.
+
+⚙️ Step 3: Define Parameters
+
+Now, click on the Parameters tab and create the same parameters you defined in the Data Model:
+
+Parameter Name	Data Type	Display Label	Default Value	Required	LOV Source
+p_supplier_name	Text	Supplier Name		No	(Optional LOV SQL)
+p_start_date	Date	Start Date		No	—
+p_end_date	Date	End Date		No	—
+
+
+Process 22832284 was submitted.Process 22832295 was submitted
