@@ -1,0 +1,80 @@
+
+soap 
+https://<server name>/xmlpserver/services/ExternalReportWSSService?WSDL
+
+Request Payload to run BI Report using SOAP
+
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:pub="http://xmlns.oracle.com/oxp/service/PublicReportService">
+   <soap:Header/>
+   <soap:Body>
+      <pub:runReport>
+         <pub:reportRequest>
+            <pub:attributeFormat/>
+            <pub:parameterNameValues>
+               <!--Zero or more repetitions:-->
+               <pub:item>
+                  <pub:name/>
+                  <pub:values>
+                     <!--Zero or more repetitions:-->
+                     <pub:item/>
+                  </pub:values>
+               </pub:item>
+            </pub:parameterNameValues>
+            <pub:reportAbsolutePath>/Custom/XX_DEMO_VIS/xx_soap_rpt.xdo</pub:reportAbsolutePath>
+            <pub:sizeOfDataChunkDownload>-1</pub:sizeOfDataChunkDownload>
+         </pub:reportRequest>
+      </pub:runReport>
+   </soap:Body>
+</soap:Envelope>
+
+
+
+
+1. FTP (File Transfer Protocol)
+
+Purpose: To transfer files from one system to another, often between a remote server (like a cloud source) and your local system.
+
+Use Case:
+You receive large files that are too big to send via email.
+Example: Monthly financial reports, invoices, or large datasets.
+
+How it works:
+You connect to an FTP server using credentials.
+Upload or download files securely (SFTP adds encryption).
+Analogy: Like a cloud mailbox for large files. Email is limited in size, but FTP handles large files efficiently.
+
+
+Client IT → generates key pair
+   ├─ Private key → stays with client (never shared)
+   └─ Public key → uploaded to client SFTP server
+
+ BI Publisher → configure SFTP using:
+   ├─ Server, username
+   └─ Public key (or password)
+Reports → sent automatically to SFTP server
+Client → downloads/uses reports from SFTP
+
+
+-----------------------------------------------------------------------------
+2. SoapUI
+
+Purpose: To test APIs (SOAP, REST, GraphQL) and ensure they behave correctly and securely.
+
+Use Case in your example:
+Suppose the FTP service is exposed via a web service API. You can’t just assume it works perfectly.
+
+SoapUI lets you test:
+Functionality: Does the service return the correct response?
+
+Security: Is the data transfer safe? Can unauthorized access happen?
+Error handling: Does it behave correctly under invalid inputs or failures?
+
+Analogy: SoapUI is like a “tester” or “inspector” for the service, making sure it works and is secure before you use it.
+
+
+Putting it together
+
+FTP = moves the file from cloud to your system.
+SoapUI = tests whether the service (like FTP exposed via API) is working correctly and safely.
+ FTP handles the file transfer, and SoapUI is used to validate the service handling that transfer, especially if it’s secure or exposed via an API.
