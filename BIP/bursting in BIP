@@ -30,7 +30,7 @@ Delivery XML format -
   </ROW>
 </ROWSET>
 
-
+***************************************************************************************************
 EMAIL - 
 PARAMETER1: Email address
 PARAMETER2: cc
@@ -40,15 +40,6 @@ PARAMETER5: Message body
 PARAMETER6: Attachment value ('true' or 'false')
 PARAMETER7: Reply-To
 PARAMETER8: Bcc (PARAMETER 9-10 are not used)
-
-
-FTP –
-PARAMETER1: Server name PARAMETER2: Username
-PARAMETER3: Password
-PARAMETER4: Remote Directory
-PARAMETER5: Remote File Name
-PARAMETER6: Secure (set this value to 'true' to enable Secure FTP)
-(PARAMETER 7-10 are not used)
 
 
 SELECT 
@@ -73,6 +64,69 @@ FROM (
   WHERE a.customer_trx_id IN (1002, 1)
 )
 
+
+
+****************************************************************************************************
+FTP –
+PARAMETER1: Server name PARAMETER2: Username
+PARAMETER3: Password
+PARAMETER4: Remote Directory
+PARAMETER5: Remote File Name
+PARAMETER6: Secure (set this value to 'true' to enable Secure FTP)
+(PARAMETER 7-10 are not used)
+
+SELECT 
+    papf.person_id AS "KEY",                 -- Split Key and data model SQL
+    'XX_REPORT_TEMPLATE' AS TEMPLATE,        -- Report template name
+    'en' AS LOCALE,                          -- Output language
+    'PDF' AS OUTPUT_FORMAT,                  -- Output type (PDF, Excel, etc.)
+    'FTP' AS DELIVERY_CHANNEL,               -- Delivery channel (email, fax, print, ftp, etc.)
+    'ftp.servername.com' AS PARAMETER1,      -- FTP Server name
+    '/u01/data/reports' AS PARAMETER2,       -- Delivery folder path
+    TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS') || '_Report.pdf' AS PARAMETER3, -- Remote file name
+    'comments' AS PARAMETER4,                -- Comments
+    'FALSE' AS PARAMETER5                    -- Test mode OFF
+FROM 
+    per_all_people_f papf,
+    per_person_names_f ppn
+WHERE 
+    papf.person_id = ppn.person_id
+    AND SYSDATE BETWEEN papf.effective_start_date AND papf.effective_end_date
+    AND SYSDATE BETWEEN ppn.effective_start_date AND ppn.effective_end_date;
+
+----------------------------------------------------------------------------------------------------------------------------------------
+SELECT 
+    p.vendor_name AS "KEY",                        -- Bursting Key (STRING)
+    'XX_INVOICE_REPORT' AS TEMPLATE,               -- BI Publisher Template Name
+    'en' AS LOCALE,                                -- Language
+    'PDF' AS OUTPUT_FORMAT,                        -- Output Format
+    'FTP' AS DELIVERY_CHANNEL,                     -- Delivery Channel
+
+    -- FTP Parameters
+    'ftp_server_name'           AS PARAMETER1,     -- FTP Server Host
+    '/outgoing/invoices/'       AS PARAMETER2,     -- Remote FTP Directory
+    'ftp_username'              AS PARAMETER3,     -- FTP Username
+    'ftp_password'              AS PARAMETER4,     -- FTP Password
+
+    -- Dynamic File Name
+    'INV_' || p.vendor_name || '_' || 
+        TO_CHAR(SYSDATE,'YYYYMMDD_HH24MISS') || '.pdf' AS OUTPUT_NAME,
+
+    -- Other Parameters (Optional)
+    'comments' AS PARAMETER7,
+    'FALSE' AS PARAMETER9
+
+FROM 
+    ap_invoices_all a
+JOIN 
+    poz_suppliers_v p
+ON 
+    a.vendor_id = p.vendor_id
+
+WHERE 
+    p.vendor_name = NVL(:p_VENDOR_NAME, p.vendor_name);
+
+*************************************************************************************************************************************
 
 Standard BI Publisher Bursting Query -FOR UCM 
 
