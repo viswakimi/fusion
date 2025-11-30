@@ -73,3 +73,29 @@ FROM (
   WHERE a.customer_trx_id IN (1002, 1)
 )
 
+
+Standard BI Publisher Bursting Query -FOR UCM 
+
+EXAMPLE
+SELECT 
+    p.vendor_name AS "KEY",                    -- Bursting Key
+    'XX_INVOICE_REPORT' AS TEMPLATE,           -- Template Code (Data Model → Bursting)
+    'en' AS LOCALE,                            -- Locale
+    'PDF' AS OUTPUT_FORMAT,                    -- Output Format
+    'WCC DEL CHANNEL' AS DELIVERY_CHANNEL,     -- Delivery Channel
+    'FA_UCM_PROVISIONED' AS PARAMETER1,        -- UCM Security Group
+    'FAFusionImportExport' AS PARAMETER2,      -- UCM Account
+    '3' AS PARAMETER3,                         -- Bursting Mode
+    'UCM Bursting Report ' || p.vendor_name ||
+        '_' || TO_CHAR(SYSDATE, 'HH24MISS') AS PARAMETER5,  -- Output Title
+    TO_CHAR(SYSDATE, 'HH24MISS') || '_Report.pdf' AS PARAMETER6,  -- Output File Name
+    'comments' AS PARAMETER7,                  -- Comments
+    'FALSE' AS PARAMETER9                      -- Test Mode OFF
+FROM 
+    ap_invoices_all a
+JOIN 
+    poz_suppliers_v p
+    ON a.vendor_id = p.vendor_id
+WHERE 
+    p.vendor_name = NVL(:p_VENDOR_NAME, p.vendor_name);
+
